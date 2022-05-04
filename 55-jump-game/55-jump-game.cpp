@@ -7,7 +7,6 @@ public:
         if(maxx==0 && n>=2){
             return false;
         }
-        
         for(int i=1;i<n-1;i++){
             
             maxx--;
@@ -17,7 +16,7 @@ public:
             }
             
         }
-        return maxx>=0;
+        return true;
         
     }
 };
