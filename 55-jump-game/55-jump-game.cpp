@@ -4,16 +4,12 @@ public:
         
         int n = nums.size();
         int maxx = nums[0];
-        if(maxx==0 && n>=2){
-            return false;
-        }
-        for(int i=1;i<n-1;i++){
+        
+        for(int i=1;i<n;i++){
             
-            maxx--;
-            maxx = max(maxx,nums[i]);
-            if(maxx<=0){
+            if(maxx == 0)
                 return false;
-            }
+            maxx = max(maxx-1,nums[i]);
             
         }
         return true;
