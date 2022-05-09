@@ -17,21 +17,52 @@ class Solution
 	    s.push(i);
 	    
 	}
-	vector<int> topoSort(int V, vector<int> adj[]) 
-	{
-	    stack<int> s;
+	vector<int> kahnAlgo(int v, vector<int> adj[]){
+	    
 	    vector<int> res;
-	    vector<bool> visited(V,false);
-	    for(int i=0;i<V;i++){
-	        if(!visited[i]){
-	            topoSortDFS(i,adj,s,visited);
+	    vector<int> indegree(v,0);
+	    for(int i=0;i<v;i++){
+	        for(auto x:adj[i]){
+	            indegree[x]++;
 	        }
 	    }
-	    while(!s.empty()){
-	        res.push_back(s.top());
-	        s.pop();
+	    
+	    queue<int> q;
+	    for(int i=0;i<v;i++){
+	        if(indegree[i]==0){
+	            q.push(i);
+	        }
+	    }
+	    
+	    while(!q.empty()){
+	        auto node = q.front();
+	        q.pop();
+	        res.push_back(node);
+	        for(auto x:adj[node]){
+	            indegree[x]--;
+	            if(indegree[x]==0){
+	                q.push(x);
+	            }
+	        }
 	    }
 	    return res;
+	}
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	   // stack<int> s;
+	   // vector<int> res;
+	   // vector<bool> visited(V,false);
+	   // for(int i=0;i<V;i++){
+	   //     if(!visited[i]){
+	   //         topoSortDFS(i,adj,s,visited);
+	   //     }
+	   // }
+	   // while(!s.empty()){
+	   //     res.push_back(s.top());
+	   //     s.pop();
+	   // }
+	   // return res;
+	   return kahnAlgo(V,adj);
 	}
 };
 
