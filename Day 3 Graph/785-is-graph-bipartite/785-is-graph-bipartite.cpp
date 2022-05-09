@@ -1,9 +1,8 @@
 class Solution {
 public:
-    bool isComponentBipartite(vector<vector<int>> &graph,vector<bool> &visited,int n,vector<int> &color){
+    bool isComponentBipartiteBFS(vector<vector<int>> &graph,int n,vector<int> &color){
         
         queue<pair<int,int>> q;
-        visited[n] = true;
         color[n] = 0;
         q.push({n,-1});
         
@@ -16,9 +15,8 @@ public:
             int col = color[node];
             for(auto x:graph[node]){
                 
-                if(!visited[x]){
+                if(color[x]==-1){
                     color[x] = 1-col;
-                    visited[x] = true;
                     q.push({x,node});
                 }
                 else if(par!=x){
@@ -33,6 +31,25 @@ public:
         return true;
         
     }
+    bool isBipartiteComponentDFS(int n, int par ,vector<vector<int>> &graph, vector<int>& color)     {
+        if(par==-1){
+            color[n] = 0;
+        }
+        else{
+            color[n] = 1-color[par];
+        }
+        
+        for(auto x:graph[n]){
+            if(color[x]==-1){
+                if(!isBipartiteComponentDFS(x,n,graph,color))
+                    return false;
+            }
+            else if(x!=par)
+                if(color[x]!=(1-color[n]))
+                    return false;
+        }
+        return true;
+    }
     bool isBipartite(vector<vector<int>>& graph) {
         
         int n = graph.size();
@@ -40,9 +57,9 @@ public:
         vector<int> col(n,-1);
         for(int i=0;i<n;i++){
             
-            if(visited[i])
+            if(col[i]!=-1)
                 continue;
-            if(!isComponentBipartite(graph,visited,i,col)){
+            if(!isComponentBipartiteBFS(graph,i,col)){
                 return false;
             }
             
