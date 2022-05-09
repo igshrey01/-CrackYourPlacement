@@ -23,15 +23,53 @@ class Solution {
         dfsVisited[n] = false;
         return false;
     }
+    bool kahnAlgo(int v, vector<int> adj[]){
+	    
+	    vector<int> res;
+	    vector<int> indegree(v,0);
+	    for(int i=0;i<v;i++){
+	        for(auto x:adj[i]){
+	            indegree[x]++;
+	        }
+	    }
+	    
+	    
+	    queue<int> q;
+	    for(int i=0;i<v;i++){
+	        if(indegree[i]==0){
+	            q.push(i);
+	        }
+	    }
+	    int cnt = 0;
+	    while(!q.empty()){
+	        auto node = q.front();
+	        q.pop();
+	        cnt++;
+	        
+	        for(auto x:adj[node]){
+	            indegree[x]--;
+	            if(indegree[x]==0){
+	                q.push(x);
+	            }
+	            
+	        }
+	    }
+	    if(cnt==v){
+	           return false;
+	       }
+	    return true;
+	    
+	}
     bool isCyclic(int V, vector<int> adj[]) {
-        vector<bool> visited(V,false);
-        vector<bool> dfsVisited(V,false);
+        // vector<bool> visited(V,false);
+        // vector<bool> dfsVisited(V,false);
         
-        for(int i=0;i<V;i++){
-            if(isCyclicDFS(i,adj,visited,dfsVisited))
-                return true;
-        }
-        return false;
+        // for(int i=0;i<V;i++){
+        //     if(isCyclicDFS(i,adj,visited,dfsVisited))
+        //         return true;
+        // }
+        // return false;
+        return kahnAlgo(V,adj);
     }
 };
 
